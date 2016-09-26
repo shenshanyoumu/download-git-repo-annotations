@@ -37,7 +37,7 @@ The callback function as `function(err)`.
 ## Examples
 Using http download from Github repository at master.
 ```javascript
-download('zeke/download-github-repo-fixture', 'test/tmp', function(err) {
+download('flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
   if (err) return done(err);
   done();
 });
@@ -45,7 +45,7 @@ download('zeke/download-github-repo-fixture', 'test/tmp', function(err) {
 
 Using git clone from Bitbucket repository at my-branch.
 ```javascript
-download('bitbucket:flipxfx/download-bitbucket-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
+download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
   if (err) return done(err);
   done();
 });
