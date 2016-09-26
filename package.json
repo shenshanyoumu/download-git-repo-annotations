@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "license": "MIT",
   "repository": "git://github.com/flipxfx/download-git-repo",
-  "description": "Download and extract a git repository (GitHub, Bitbucket) from node.",
+  "description": "Download and extract a git repository (GitHub, GitLab, Bitbucket) from node.",
   "keywords": [
     "download",
     "github",

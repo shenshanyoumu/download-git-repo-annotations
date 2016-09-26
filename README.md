@@ -13,13 +13,14 @@ Download and extract a git repository (GitHub, GitLab, Bitbucket) from node.
 Download a git `repository` to a `destination` folder with `options`, and `callback`.
 
 #### repository
-The short hand repository string to download the repository from.
+The short hand repository string to download the repository from:
 
 - GitHub - `github:owner/name` or simply `owner/name`
 - GitLab - `gitlab:owner/name`
 - Bitbucket - `bitbucket:owner/name`
 
 The `repository` parameter defaults to the `master` branch, but you can specify a branch or tag as a URL fragment like `owner/name#my-branch`.
+In addition to specifying the type of where to download, you can also specify a custom host like `gitlab:custom.com:owner/name`.
 Feel free to submit an issue or pull request for additional host options.
 
 #### destination

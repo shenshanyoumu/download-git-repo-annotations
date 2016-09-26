@@ -1,6 +1,6 @@
-var Download = require('download');
-var gitclone = require('git-clone');
-var rm = require('rimraf').sync;
+var Download = require("download");
+var gitclone = require("git-clone");
+var rm = require("rimraf").sync;
 
 /**
  * Expose `download`.
@@ -17,7 +17,7 @@ module.exports = download;
  */
 
 function download(repo, dest, opts, fn) {
-  if (typeof opts === 'function') {
+  if (typeof opts === "function") {
     fn = opts;
     opts = null;
   }
@@ -39,7 +39,7 @@ function download(repo, dest, opts, fn) {
     });
   }
   else {
-    new Download({ mode: '666', extract: true, strip: 1 }).get(url).dest(dest).run(function(err, files) {
+    new Download({ mode: "666", extract: true, strip: 1 }).get(url).dest(dest).run(function(err, files) {
       err === null ? fn() : fn(err);
     });
   }
@@ -53,15 +53,26 @@ function download(repo, dest, opts, fn) {
  */
 
 function normalize(repo) {
-  var regex = /^((github|gitlab|bitbucket):)?([^/]*)\/([^#]*)(#(.*))?$/;
+  var regex = /^((github|gitlab|bitbucket):)?((.+):)?([^/]+)\/([^#]+)(#(.+))?$/;
   var match = regex.exec(repo);
   var type = match[2] || "github";
-  var owner = match[3];
-  var name = match[4];
-  var checkout = match[6] || "master";
+  var host = match[4] || null;
+  var owner = match[5];
+  var name = match[6];
+  var checkout = match[8] || "master";
+
+  if (host == null) {
+    if (type === "github")
+      host = "github.com";
+    else if (type === "gitlab")
+      host = "gitlab.com";
+    else if (type === "bitbucket")
+      host = "bitbucket.com";
+  }
 
   return {
     type: type,
+    host: host,
     owner: owner,
     name: name,
     checkout: checkout
@@ -78,11 +89,11 @@ function normalize(repo) {
 function getUrl(repo, clone) {
   var url;
 
-  if (repo.type === 'github')
+  if (repo.type === "github")
     url = github(repo, clone);
-  else if (repo.type === 'gitlab')
+  else if (repo.type === "gitlab")
     url = gitlab(repo, clone);
-  else if (repo.type === 'bitbucket')
+  else if (repo.type === "bitbucket")
     url = bitbucket(repo, clone);
   else
     url = github(repo, clone);
@@ -101,9 +112,9 @@ function github(repo, clone) {
   var url;
 
   if (clone)
-    url = 'git@github.com:' + repo.owner + '/' + repo.name + '.git';
+    url = "git@" + repo.host + ":" + repo.owner + "/" + repo.name + ".git";
   else
-    url = 'https://github.com/' + repo.owner + '/' + repo.name + '/archive/' + repo.checkout + '.zip';
+    url = "https://" + repo.host + "/" + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip";
 
   return url;
 }
@@ -119,9 +130,9 @@ function gitlab(repo, clone) {
   var url;
 
   if (clone)
-    url = 'git@gitlab.com:' + repo.owner + '/' + repo.name + '.git';
+    url = "git@" + repo.host + ":" + repo.owner + "/" + repo.name + ".git";
   else
-    url = 'https://gitlab.com/' + repo.owner + '/' + repo.name + '/repository/archive.zip?ref=' + repo.checkout;
+    url = "https://" + repo.host + "/" + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout;
 
   return url;
 }
@@ -137,9 +148,9 @@ function bitbucket(repo, clone) {
   var url;
 
   if (clone)
-    url = 'git@bitbucket.org:' + repo.owner + '/' + repo.name + '.git';
+    url = "git@" + repo.host + ":" + repo.owner + "/" + repo.name + ".git";
   else
-    url = 'https://bitbucket.org/' + repo.owner + '/' + repo.name + '/get/' + repo.checkout + '.zip';
+    url = "https://" + repo.host + "/" + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip";
 
   return url;
 }
