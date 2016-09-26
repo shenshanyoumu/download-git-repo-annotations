@@ -15,7 +15,7 @@ describe('download-git-repo', function() {
 
   describe('via github', function() {
     it('downloads the master branch by default', function(done) {
-      download('github:zeke/download-github-repo-fixture', 'test/tmp', function(err) {
+      download('github:flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -24,8 +24,8 @@ describe('download-git-repo', function() {
       });
     });
 
-    it('download branches too', function(done) {
-      download('github:zeke/download-github-repo-fixture#my-branch', 'test/tmp', function(err) {
+    it('downloads branches too', function(done) {
+      download('github:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');
@@ -35,7 +35,7 @@ describe('download-git-repo', function() {
     });
 
     it('downloads from github by default', function(done) {
-      download('zeke/download-github-repo-fixture', 'test/tmp', function(err) {
+      download('flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -45,7 +45,7 @@ describe('download-git-repo', function() {
     });
 
     it('clones the master branch by default', function(done) {
-      download('github:zeke/download-github-repo-fixture', 'test/tmp', { clone: true }, function(err) {
+      download('github:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -55,10 +55,20 @@ describe('download-git-repo', function() {
     });
 
     it('clones branches too', function(done) {
-      download('github:zeke/download-github-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
+      download('github:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');
+        assert.deepEqual(actual, expected);
+        done();
+      });
+    });
+
+    it('downloads branches with slashes', function(done) {
+      download('github:flipxfx/download-git-repo-fixture#my/branch/with/slashes', 'test/tmp', function(err) {
+        if (err) return done(err);
+        var actual = read('test/tmp', filter);
+        var expected = read('test/fixtures/my-branch-with-slashes');
         assert.deepEqual(actual, expected);
         done();
       });
@@ -67,7 +77,7 @@ describe('download-git-repo', function() {
 
   describe('via gitlab', function() {
     it('downloads the master branch by default', function(done) {
-      download('gitlab:flipxfx/download-gitlab-repo-fixture', 'test/tmp', function(err) {
+      download('gitlab:flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -76,8 +86,8 @@ describe('download-git-repo', function() {
       });
     });
 
-    it('download branches too', function(done) {
-      download('gitlab:flipxfx/download-gitlab-repo-fixture#my-branch', 'test/tmp', function(err) {
+    it('downloads branches too', function(done) {
+      download('gitlab:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');
@@ -87,7 +97,7 @@ describe('download-git-repo', function() {
     });
 
     it('clones the master branch by default', function(done) {
-      download('gitlab:flipxfx/download-gitlab-repo-fixture', 'test/tmp', { clone: true }, function(err) {
+      download('gitlab:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -97,7 +107,7 @@ describe('download-git-repo', function() {
     });
 
     it('clones branches too', function(done) {
-      download('gitlab:flipxfx/download-gitlab-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
+      download('gitlab:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');
@@ -109,7 +119,7 @@ describe('download-git-repo', function() {
 
   describe('via bitbucket', function() {
     it('downloads the master branch by default', function(done) {
-      download('bitbucket:flipxfx/download-bitbucket-repo-fixture', 'test/tmp', function(err) {
+      download('bitbucket:flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -118,8 +128,8 @@ describe('download-git-repo', function() {
       });
     });
 
-    it('download branches too', function(done) {
-      download('bitbucket:flipxfx/download-bitbucket-repo-fixture#my-branch', 'test/tmp', function(err) {
+    it('downloads branches too', function(done) {
+      download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');
@@ -129,7 +139,7 @@ describe('download-git-repo', function() {
     });
 
     it('clones the master branch by default', function(done) {
-      download('bitbucket:flipxfx/download-bitbucket-repo-fixture', 'test/tmp', { clone: true }, function(err) {
+      download('bitbucket:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/master');
@@ -139,7 +149,7 @@ describe('download-git-repo', function() {
     });
 
     it('clones branches too', function(done) {
-      download('bitbucket:flipxfx/download-bitbucket-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
+      download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
         if (err) return done(err);
         var actual = read('test/tmp', filter);
         var expected = read('test/fixtures/my-branch');

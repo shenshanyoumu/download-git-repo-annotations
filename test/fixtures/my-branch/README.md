@@ -1,1 +1,1 @@
-I'm a sample repo for testing the [download-github-repo](https://github.com/ianstormtaylor/download-github-repo) node module.
+A sample repo for testing the [download-git-repo](https://github.com/flipxfx/download-git-repo) node module.

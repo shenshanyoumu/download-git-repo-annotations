@@ -53,28 +53,12 @@ function download(repo, dest, opts, fn) {
  */
 
 function normalize(repo) {
-  var type = 'github';
-  if (repo.indexOf('github:') === 0) {
-    type = 'github';
-    repo = repo.substring(7);
-  }
-  else if (repo.indexOf('gitlab:') === 0) {
-    type = 'gitlab';
-    repo = repo.substring(7);
-  }
-  else if (repo.indexOf('bitbucket:') === 0) {
-    type = 'bitbucket';
-    repo = repo.substring(10);
-  }
-
-  var owner = repo.split('/')[0];
-  var name = repo.split('/')[1];
-  var checkout = 'master';
-
-  if (~name.indexOf('#')) {
-    checkout = name.split('#')[1];
-    name = name.split('#')[0];
-  }
+  var regex = /^((github|gitlab|bitbucket):)?([^/]*)\/([^#]*)(#(.*))?$/;
+  var match = regex.exec(repo);
+  var type = match[2] || "github";
+  var owner = match[3];
+  var name = match[4];
+  var checkout = match[6] || "master";
 
   return {
     type: type,
