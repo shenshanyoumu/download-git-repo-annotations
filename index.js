@@ -1,4 +1,4 @@
-var Download = require("download")
+var downloadUrl = require("download")
 var gitclone = require("git-clone")
 var rm = require("rimraf").sync
 
@@ -13,6 +13,7 @@ module.exports = download
  *
  * @param {String} repo
  * @param {String} dest
+ * @param {Object} opts
  * @param {Function} fn
  */
 
@@ -28,7 +29,7 @@ function download (repo, dest, opts, fn) {
   var url = getUrl(repo, clone)
 
   if (clone) {
-    gitclone(url, dest, { checkout: repo.checkout }, function(err) {
+    gitclone(url, dest, { checkout: repo.checkout }, function (err) {
       if (err === undefined) {
         rm(dest + "/.git")
         fn()
@@ -39,8 +40,10 @@ function download (repo, dest, opts, fn) {
     })
   }
   else {
-    new Download({ mode: "666", extract: true, strip: 1 }).get(url).dest(dest).run(function(err, files) {
-      err === null ? fn() : fn(err)
+    downloadUrl(url, dest, { extract: true, strip: 1, mode: "666", headers: { accept: "application/zip" } }).then(data => {
+      fn()
+    }).catch(err => {
+      fn(err)
     })
   }
 }
