@@ -38,16 +38,14 @@ The callback function as `function(err)`.
 Using http download from Github repository at master.
 ```javascript
 download('flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
-  if (err) return done(err);
-  done();
+  console.log(err ? "Error" : "Success")
 });
 ```
 
 Using git clone from Bitbucket repository at my-branch.
 ```javascript
-download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function(err) {
-  if (err) return done(err);
-  done();
+download('flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function(err) {
+  console.log(err ? "Error" : "Success")
 });
 ```
 
