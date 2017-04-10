@@ -20,8 +20,9 @@ The short hand repository string to download the repository from:
 - Bitbucket - `bitbucket:owner/name`
 
 The `repository` parameter defaults to the `master` branch, but you can specify a branch or tag as a URL fragment like `owner/name#my-branch`.
-In addition to specifying the type of where to download, you can also specify a custom host like `gitlab:custom.com:owner/name`.
-Feel free to submit an issue or pull request for additional host options.
+In addition to specifying the type of where to download, you can also specify a custom origin like `gitlab:custom.com:owner/name`.
+Custom origin will default to HTTPS unless protocol is specified.
+Feel free to submit an issue or pull request for additional origin options.
 
 #### destination
 The file path to download the repository to.
@@ -39,14 +40,14 @@ Using http download from Github repository at master.
 ```javascript
 download('flipxfx/download-git-repo-fixture', 'test/tmp', function(err) {
   console.log(err ? "Error" : "Success")
-});
+})
 ```
 
 Using git clone from Bitbucket repository at my-branch.
 ```javascript
 download('flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function(err) {
   console.log(err ? "Error" : "Success")
-});
+})
 ```
 
 ## Thanks

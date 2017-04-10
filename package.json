@@ -17,12 +17,11 @@
   "dependencies": {
     "download": "^4.4.3",
     "git-clone": "^0.1.0",
-    "rimraf": "^2.5.0"
+    "rimraf": "^2.6.1"
   },
   "devDependencies": {
-    "mocha": "^2.3.4",
-    "fs-readdir-recursive": "1.0.0",
-    "rimraf": "^2.5.0"
+    "mocha": "^3.2.0",
+    "fs-readdir-recursive": "1.0.0"
   },
   "scripts": {
     "test": "mocha"
