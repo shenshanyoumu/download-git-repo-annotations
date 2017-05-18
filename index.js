@@ -33,13 +33,11 @@ function download (repo, dest, opts, fn) {
       if (err === undefined) {
         rm(dest + "/.git")
         fn()
-      }
-      else {
+      } else {
         fn(err)
       }
     })
-  }
-  else {
+  } else {
     downloadUrl(url, dest, { extract: true, strip: 1, mode: "666", headers: { accept: "application/zip" } }).then(data => {
       fn()
     }).catch(err => {
@@ -83,17 +81,21 @@ function normalize (repo) {
 }
 
 /**
- * Add HTTPs protocol to url in none specified.
+ * Adds protocol to url in none specified
  *
  * @param {String} url
  * @return {String}
  */
 
-function addProtocol (url) {
-  if (!/^(f|ht)tps?:\/\//i.test(url))
-    url = "https://" + url
+function addProtocol (origin, clone) {
+  if (!/^(f|ht)tps?:\/\//i.test(origin)) {
+    if (clone)
+      origin = "git@" + origin
+    else
+      origin = "https://" + origin
+  }
 
-  return url
+  return origin
 }
 
 /**
@@ -106,68 +108,26 @@ function addProtocol (url) {
 function getUrl (repo, clone) {
   var url
 
-  if (repo.type === "github")
-    url = github(repo, clone)
-  else if (repo.type === "gitlab")
-    url = gitlab(repo, clone)
-  else if (repo.type === "bitbucket")
-    url = bitbucket(repo, clone)
+  // Get origin with protocol and add trailing slash or colon (for ssh)
+  var origin = addProtocol(repo.origin, clone)
+  if (/^git\@/i.test(origin))
+    origin = origin + ":"
   else
-    url = github(repo, clone)
+    origin = origin + "/"
 
-  return url
-}
-
-/**
- * Return a GitHub url for a given `repo` object.
- *
- * @param {Object} repo
- * @return {String}
- */
-
-function github (repo, clone) {
-  var url
-
-  if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
-  else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
-
-  return url
-}
-
-/**
- * Return a GitLab url for a given `repo` object.
- *
- * @param {Object} repo
- * @return {String}
- */
-
-function gitlab (repo, clone) {
-  var url
-
-  if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
-  else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout
-
-  return url
-}
-
-/**
- * Return a Bitbucket url for a given `repo` object.
- *
- * @param {Object} repo
- * @return {String}
- */
-
-function bitbucket (repo, clone) {
-  var url
-
-  if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
-  else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
+  // Build url
+  if (clone) {
+    url = origin + repo.owner + "/" + repo.name + ".git"
+  } else {
+    if (repo.type === "github")
+      url = origin + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
+    else if (repo.type === "gitlab")
+      url = origin + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout
+    else if (repo.type === "bitbucket")
+      url = origin + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
+    else
+      url = github(repo)
+  }
 
   return url
 }

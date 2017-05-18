@@ -34,16 +34,6 @@ describe('download-git-repo', function () {
       })
     })
 
-    it('downloads from github by default', function (done) {
-      download('flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
-        if (err) return done(err)
-        var actual = read('test/tmp', filter)
-        var expected = read('test/fixtures/master')
-        assert.deepEqual(actual, expected)
-        done()
-      })
-    })
-
     it('clones the master branch by default', function (done) {
       download('github:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true }, function (err) {
         if (err) return done(err)
@@ -69,6 +59,36 @@ describe('download-git-repo', function () {
         if (err) return done(err)
         var actual = read('test/tmp', filter)
         var expected = read('test/fixtures/my-branch-with-slashes')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('downloads from github by default', function (done) {
+      download('flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('downloads the master branch with specific origin', function (done) {
+      download('github:github.com:flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('clones the master branch with specific origin and protocol', function (done) {
+      download('github:https://github.com:flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
         assert.deepEqual(actual, expected)
         done()
       })

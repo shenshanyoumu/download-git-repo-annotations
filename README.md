@@ -21,7 +21,7 @@ The short hand repository string to download the repository from:
 
 The `repository` parameter defaults to the `master` branch, but you can specify a branch or tag as a URL fragment like `owner/name#my-branch`.
 In addition to specifying the type of where to download, you can also specify a custom origin like `gitlab:custom.com:owner/name`.
-Custom origin will default to HTTPS unless protocol is specified.
+Custom origin will default to `https` or `git@` for http and clone downloads respectively, unless protocol is specified.
 Feel free to submit an issue or pull request for additional origin options.
 
 #### destination
@@ -45,7 +45,21 @@ download('flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
 
 Using git clone from Bitbucket repository at my-branch.
 ```javascript
-download('flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function (err) {
+download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
+  console.log(err ? "Error" : "Success")
+})
+```
+
+Using http download from GitLab repository with custom origin.
+```javascript
+download('gitlab:mygitlab.com:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function (err) {
+  console.log(err ? "Error" : "Success")
+})
+```
+
+Using clone download from GitLab repository with custom origin and protocol.
+```javascript
+download('gitlab:https://mygitlab.com:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
   console.log(err ? "Error" : "Success")
 })
 ```
