@@ -1,6 +1,6 @@
-var downloadUrl = require("download")
-var gitclone = require("git-clone")
-var rm = require("rimraf").sync
+var downloadUrl = require('download')
+var gitclone = require('git-clone')
+var rm = require('rimraf').sync
 
 /**
  * Expose `download`.
@@ -18,7 +18,7 @@ module.exports = download
  */
 
 function download (repo, dest, opts, fn) {
-  if (typeof opts === "function") {
+  if (typeof opts === 'function') {
     fn = opts
     opts = null
   }
@@ -29,16 +29,16 @@ function download (repo, dest, opts, fn) {
   var url = getUrl(repo, clone)
 
   if (clone) {
-    gitclone(url, dest, { checkout: repo.checkout, shallow: repo.checkout === "master" }, function (err) {
+    gitclone(url, dest, { checkout: repo.checkout, shallow: repo.checkout === 'master' }, function (err) {
       if (err === undefined) {
-        rm(dest + "/.git")
+        rm(dest + '/.git')
         fn()
       } else {
         fn(err)
       }
     })
   } else {
-    downloadUrl(url, dest, { extract: true, strip: 1, mode: "666", headers: { accept: "application/zip" } }).then(data => {
+    downloadUrl(url, dest, { extract: true, strip: 1, mode: '666', headers: { accept: 'application/zip' } }).then(data => {
       fn()
     }).catch(err => {
       fn(err)
@@ -56,19 +56,19 @@ function download (repo, dest, opts, fn) {
 function normalize (repo) {
   var regex = /^((github|gitlab|bitbucket):)?((.+):)?([^/]+)\/([^#]+)(#(.+))?$/
   var match = regex.exec(repo)
-  var type = match[2] || "github"
+  var type = match[2] || 'github'
   var origin = match[4] || null
   var owner = match[5]
   var name = match[6]
-  var checkout = match[8] || "master"
+  var checkout = match[8] || 'master'
 
   if (origin == null) {
-    if (type === "github")
-      origin = "github.com"
-    else if (type === "gitlab")
-      origin = "gitlab.com"
-    else if (type === "bitbucket")
-      origin = "bitbucket.com"
+    if (type === 'github')
+      origin = 'github.com'
+    else if (type === 'gitlab')
+      origin = 'gitlab.com'
+    else if (type === 'bitbucket')
+      origin = 'bitbucket.com'
   }
 
   return {
@@ -90,9 +90,9 @@ function normalize (repo) {
 function addProtocol (origin, clone) {
   if (!/^(f|ht)tps?:\/\//i.test(origin)) {
     if (clone)
-      origin = "git@" + origin
+      origin = 'git@' + origin
     else
-      origin = "https://" + origin
+      origin = 'https://' + origin
   }
 
   return origin
@@ -111,20 +111,20 @@ function getUrl (repo, clone) {
   // Get origin with protocol and add trailing slash or colon (for ssh)
   var origin = addProtocol(repo.origin, clone)
   if (/^git\@/i.test(origin))
-    origin = origin + ":"
+    origin = origin + ':'
   else
-    origin = origin + "/"
+    origin = origin + '/'
 
   // Build url
   if (clone) {
-    url = origin + repo.owner + "/" + repo.name + ".git"
+    url = origin + repo.owner + '/' + repo.name + '.git'
   } else {
-    if (repo.type === "github")
-      url = origin + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
-    else if (repo.type === "gitlab")
-      url = origin + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout
-    else if (repo.type === "bitbucket")
-      url = origin + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
+    if (repo.type === 'github')
+      url = origin + repo.owner + '/' + repo.name + '/archive/' + repo.checkout + '.zip'
+    else if (repo.type === 'gitlab')
+      url = origin + repo.owner + '/' + repo.name + '/repository/archive.zip?ref=' + repo.checkout
+    else if (repo.type === 'bitbucket')
+      url = origin + repo.owner + '/' + repo.name + '/get/' + repo.checkout + '.zip'
     else
       url = github(repo)
   }
