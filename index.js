@@ -29,7 +29,7 @@ function download (repo, dest, opts, fn) {
   var url = getUrl(repo, clone)
 
   if (clone) {
-    gitclone(url, dest, { checkout: repo.checkout }, function (err) {
+    gitclone(url, dest, { checkout: repo.checkout, shallow: repo.checkout === "master" }, function (err) {
       if (err === undefined) {
         rm(dest + "/.git")
         fn()
