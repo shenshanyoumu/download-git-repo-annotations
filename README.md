@@ -57,7 +57,7 @@ download('gitlab:mygitlab.com:flipxfx/download-git-repo-fixture#my-branch', 'tes
 })
 ```
 
-Using clone download from GitLab repository with custom origin and protocol.
+Using git clone from GitLab repository with custom origin and protocol.
 Note that the repository type (`github`, `gitlab` etc.) is not required if cloning from a custom origin.
 ```javascript
 download('https://mygitlab.com:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
