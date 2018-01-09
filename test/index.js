@@ -4,7 +4,7 @@ var read = require('fs-readdir-recursive')
 var rm = require('rimraf').sync
 
 describe('download-git-repo', function () {
-  this.timeout(10000)
+  this.timeout(20000)
 
   beforeEach(function () {
     rm('test/tmp')
@@ -112,21 +112,6 @@ describe('download-git-repo', function () {
 
   describe('via gitlab', function () {
     runType('gitlab')
-
-    it('errors when trying to download private repo', function (done) {
-      download('gitlab:infinitesecond/for-my-flippy', 'test/tmp', function (err) {
-        if (err) {
-          if (err.message == 'Response code 406 (Not Acceptable)')
-            return done()
-          else
-            return done(err)
-        }
-        var actual = read('test/tmp', filter)
-        var expected = read('test/fixtures/gitlab/master')
-        assert.deepEqual(actual, expected)
-        done()
-      })
-    })
   })
 
   describe('via bitbucket', function () {

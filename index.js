@@ -68,7 +68,7 @@ function normalize (repo) {
     else if (type === 'gitlab')
       origin = 'gitlab.com'
     else if (type === 'bitbucket')
-      origin = 'bitbucket.com'
+      origin = 'bitbucket.org'
   }
 
   return {
